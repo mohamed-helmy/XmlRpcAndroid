@@ -36,4 +36,6 @@ public class TypeDefinitions {
     public final static String KEY_PARAMS       = "params";
     public final static String METHOD_CALL      = "methodCall";
     public final static String METHOD_RESPONSE  = "methodResponse";
+    public final static String KEY_PARAM        = "param";
+
 }

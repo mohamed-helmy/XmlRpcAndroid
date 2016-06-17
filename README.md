@@ -3,6 +3,11 @@ XmlRpc is an android extension for using with retrofit and putting serialization
 
 Sample Code;
 
+first create serializer of SimpleXml Library
+```java
+        Serializer serializer = new Persister(new XMLRpcMatcher(), new Format("<?xml version=\"1.0\" encoding=\"utf-8\"?>"));
+```
+
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <methodCall>
@@ -18,9 +23,11 @@ Sample Code;
 ```
 in java
 ```java
-XMLRpcRequest requestGetSubtitleLanguages = new XMLRpcRequest()
+   XMLRpcRequest request = new XMLRpcRequest()
                 .withMethodName("SampleMethodName")
                 .add(XMLRpcParam.withObject(XMLRpcObject.withValue("stringParam")));
+                
+   serializer.write(request, System.out);
 ```
 another example with different types
 ```xml
@@ -58,11 +65,13 @@ another example with different types
 ```
 in java
 ```java
-   XMLRpcRequest requestGetSubtitleLanguages = new XMLRpcRequest()
+   XMLRpcRequest request = new XMLRpcRequest()
                 .withMethodName("SampleMethodName")
                 .add(XMLRpcParam.withObject(XMLRpcObject.withValue("param1")))//string
                 .add(XMLRpcParam.withObject(XMLRpcObject.withValue(1d)))//double
                 .add(XMLRpcParam.withObject(XMLRpcObject.withValue(true)))//boolean
                 .add(XMLRpcParam.withObject(XMLRpcObject.withValue(new Date())))//date formated as "yyyyMMdd'T'HH:mm:ss"
                 .add(XMLRpcParam.withObject(XMLRpcObject.withValue(1)));//integer
+   
+   serializer.write(request, System.out);
 ```

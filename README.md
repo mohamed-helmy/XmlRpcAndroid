@@ -5,7 +5,7 @@ Sample Code;
 
 first create serializer of SimpleXml Library
 ```java
-        Serializer serializer = new Persister(new XMLRpcMatcher(), new Format("<?xml version=\"1.0\" encoding=\"utf-8\"?>"));
+Serializer serializer = new Persister(new XMLRpcMatcher(), new Format("<?xml version=\"1.0\" encoding=\"utf-8\"?>"));
 ```
 
 ```xml
@@ -23,11 +23,11 @@ first create serializer of SimpleXml Library
 ```
 in java
 ```java
-   XMLRpcRequest request = new XMLRpcRequest()
+XMLRpcRequest request = new XMLRpcRequest()
                 .withMethodName("SampleMethodName")
                 .add(XMLRpcParam.withObject(XMLRpcObject.withValue("stringParam")));
                 
-   serializer.write(request, System.out);
+serializer.write(request, System.out);
 ```
 another example with different types
 ```xml
@@ -65,7 +65,7 @@ another example with different types
 ```
 in java
 ```java
-   XMLRpcRequest request = new XMLRpcRequest()
+XMLRpcRequest request = new XMLRpcRequest()
                 .withMethodName("SampleMethodName")
                 .add(XMLRpcParam.withObject(XMLRpcObject.withValue("param1")))//string
                 .add(XMLRpcParam.withObject(XMLRpcObject.withValue(1d)))//double
@@ -73,5 +73,5 @@ in java
                 .add(XMLRpcParam.withObject(XMLRpcObject.withValue(new Date())))//date formated as "yyyyMMdd'T'HH:mm:ss"
                 .add(XMLRpcParam.withObject(XMLRpcObject.withValue(1)));//integer
    
-   serializer.write(request, System.out);
+serializer.write(request, System.out);
 ```

@@ -13,7 +13,7 @@ import java.util.Locale;
  * as org.fs.xml.type.Param
  */
 /* @hide */
-@Root
+@Root(name = TypeDefinitions.KEY_PARAM)
 public class XMLRpcParam {
 
     @Element(required = false)

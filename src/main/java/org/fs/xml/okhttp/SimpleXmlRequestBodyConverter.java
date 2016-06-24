@@ -1,15 +1,15 @@
 package org.fs.xml.okhttp;
 
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.RequestBody;
 
 import org.simpleframework.xml.Serializer;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import okio.Buffer;
-import retrofit.Converter;
+import retrofit2.Converter;
 
 /**
  * Created by Fatih on 10/11/15.

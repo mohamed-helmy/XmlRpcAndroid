@@ -1,13 +1,13 @@
 package org.fs.xml.okhttp;
 
-import com.squareup.okhttp.ResponseBody;
 
 import org.simpleframework.xml.Serializer;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-import retrofit.Converter;
+import okhttp3.ResponseBody;
+import retrofit2.Converter;
 
 /**
  * Created by Fatih on 10/11/15.

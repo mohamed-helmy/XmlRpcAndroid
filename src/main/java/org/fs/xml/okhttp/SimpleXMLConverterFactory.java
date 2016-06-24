@@ -1,7 +1,5 @@
 package org.fs.xml.okhttp;
 
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.ResponseBody;
 
 import org.fs.xml.transform.XMLRpcMatcher;
 import org.simpleframework.xml.Serializer;
@@ -11,7 +9,10 @@ import org.simpleframework.xml.stream.Format;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
-import retrofit.Converter;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Converter;
+import retrofit2.Retrofit;
 
 /**
  * Created by Fatih on 10/11/15.
@@ -48,16 +49,16 @@ public class SimpleXMLConverterFactory extends Converter.Factory {
     }
 
     @Override
-    public Converter<?, RequestBody> toRequestBody(Type type, Annotation[] annotations) {
-        if(!(type instanceof Class))
-            return null;
-        return new SimpleXmlRequestBodyConverter<>(serializer);
-    }
-
-    @Override
-    public Converter<ResponseBody, ?> fromResponseBody(Type type, Annotation[] annotations) {
+    public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations, Retrofit retrofit) {
         if(!(type instanceof Class))
             return null;
         return new SimpleXmlResponseBodyConverter<>((Class<?>)type, serializer, strict);
+    }
+
+    @Override
+    public Converter<?, RequestBody> requestBodyConverter(Type type, Annotation[] parameterAnnotations, Annotation[] methodAnnotations, Retrofit retrofit) {
+        if(!(type instanceof Class))
+            return null;
+        return new SimpleXmlRequestBodyConverter<>(serializer);
     }
 }

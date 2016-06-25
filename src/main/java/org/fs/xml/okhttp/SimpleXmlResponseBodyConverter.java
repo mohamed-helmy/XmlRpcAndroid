@@ -25,8 +25,7 @@ public class SimpleXmlResponseBodyConverter<T> implements Converter<ResponseBody
         this.strict = strict;
     }
 
-    @Override
-    public T convert(ResponseBody value) throws IOException {
+    @Override public T convert(ResponseBody value) throws IOException {
         InputStream input = value.byteStream();
         try {
             T read = serializer.read(clazz, input, strict);

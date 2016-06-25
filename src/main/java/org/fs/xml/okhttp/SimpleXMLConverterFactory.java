@@ -48,15 +48,13 @@ public class SimpleXMLConverterFactory extends Converter.Factory {
         return strict;
     }
 
-    @Override
-    public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations, Retrofit retrofit) {
+    @Override public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations, Retrofit retrofit) {
         if(!(type instanceof Class))
             return null;
         return new SimpleXmlResponseBodyConverter<>((Class<?>)type, serializer, strict);
     }
 
-    @Override
-    public Converter<?, RequestBody> requestBodyConverter(Type type, Annotation[] parameterAnnotations, Annotation[] methodAnnotations, Retrofit retrofit) {
+    @Override public Converter<?, RequestBody> requestBodyConverter(Type type, Annotation[] parameterAnnotations, Annotation[] methodAnnotations, Retrofit retrofit) {
         if(!(type instanceof Class))
             return null;
         return new SimpleXmlRequestBodyConverter<>(serializer);

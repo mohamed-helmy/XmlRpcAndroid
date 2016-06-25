@@ -26,8 +26,7 @@ public class SimpleXmlRequestBodyConverter<T> implements Converter<T, RequestBod
         this.serializer = serializer;
     }
 
-    @Override
-    public RequestBody convert(T value) throws IOException {
+    @Override public RequestBody convert(T value) throws IOException {
         Buffer buffer = new Buffer();
         try {
             OutputStreamWriter out = new OutputStreamWriter(buffer.outputStream(), UTF_8);

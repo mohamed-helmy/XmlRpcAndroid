@@ -1,13 +1,26 @@
 # XmlRpcAndroid
-XmlRpc is an android extension for using with retrofit and putting serialization or deserialization of xml-rpc service endpoints into object oriented way by using SimpleXml to serialize/deserialize.
+XmlRpcAndroid re-styled for android since SimpleXML library mainly uses reflection now XmlPullParser and XmlSerializer used for serialization and deserialization
+processes this improves process less trouble at all and naming values not required the way before.
 
-Sample Code;
+Code Samples;
 
-first create serializer of SimpleXml Library
+if you are using retrofit
 ```java
-Serializer serializer = new Persister(new XMLRpcMatcher(), new Format("<?xml version=\"1.0\" encoding=\"utf-8\"?>"));
+Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl("YOUR_ENDPOINT_URL")    
+                                .addConverterFactory(LegacyConverterFactory.create())//or send parser with #create(Parser)
+                                ....
+                                .build();
+                                
+                                
+interface MyServiceEndpoint {
+    
+    @POST
+    Call<XMLRpcResponse> method(@Body XMLRpcRequest request);
+}                                
 ```
 
+in order to achieve this request
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <methodCall>
@@ -21,57 +34,74 @@ Serializer serializer = new Persister(new XMLRpcMatcher(), new Format("<?xml ver
    </params>
 </methodCall>
 ```
-in java
+
+follow in java code
 ```java
-XMLRpcRequest request = new XMLRpcRequest()
-                .withMethodName("SampleMethodName")
-                .add(XMLRpcParam.withObject(XMLRpcObject.withValue("stringParam")));
+XMLRpcRequest request = XMLRpcRequest.create("SampleMethodName")
+                                     .addParameter(Parameter.create("StringParam"));
                 
-serializer.write(request, System.out);
+Parser parser = new Parser(); //create new Parser
+parser.addBooleanConverter(true); //set style of boolean true means <code>1 or 0</code> false means <code>true or false</code>
+parser.addStringConverter(false); //set string style wrap with <string> tag or not
+parser.addDateConverter("yyyy-MM-dd'T'HH:mm:ss", //this provides advenced level of date read and write
+                        Locale.getDefault(),
+                        TimeZone.getTimeZone("GMT"));
+                        
+parser.write(OutputStreamWriter, requst, "utf-8"); 
+OutputStreamWriter#flush(); //flush outputStreamWriter                        
 ```
+
 another example with different types
 ```xml
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8' ?>
 <methodCall>
-   <methodName>SampleMethodName</methodName>
-   <params>
-      <param>
-         <value>
-            <string>param1</string>
-         </value>
-      </param>
-      <param>
-         <value>
-            <double>1.0</double>
-         </value>
-      </param>
-      <param>
-         <value>
-            <boolean>1</boolean>
-         </value>
-      </param>
-      <param>
-         <value>
-            <dateTime.iso8601>20160617T22:37:12</dateTime.iso8601>
-         </value>
-      </param>
-      <param>
-         <value>
-            <int>1</int>
-         </value>
-      </param>
-   </params>
+  <methodName>SampleMethodName</methodName>
+  <params>
+    <param>
+      <value>
+        <string>param1</string>
+      </value>
+    </param>
+    <param>
+      <value>
+        <double>1.0</double>
+      </value>
+    </param>
+    <param>
+      <value>
+        <boolean>1</boolean>
+      </value>
+    </param>
+    <param>
+      <value>
+        <dateTime.iso8601>2016-07-12T08:27:52</dateTime.iso8601>
+      </value>
+    </param>
+    <param>
+      <value>
+        <i4>1</i4>
+      </value>
+    </param>
+  </params>
 </methodCall>
 ```
-in java
+
+follow in java code
 ```java
-XMLRpcRequest request = new XMLRpcRequest()
-                .withMethodName("SampleMethodName")
-                .add(XMLRpcParam.withObject(XMLRpcObject.withValue("param1")))//string
-                .add(XMLRpcParam.withObject(XMLRpcObject.withValue(1d)))//double
-                .add(XMLRpcParam.withObject(XMLRpcObject.withValue(true)))//boolean
-                .add(XMLRpcParam.withObject(XMLRpcObject.withValue(new Date())))//date formated as "yyyyMMdd'T'HH:mm:ss"
-                .add(XMLRpcParam.withObject(XMLRpcObject.withValue(1)));//integer
+XMLRpcRequest request = XMLRpcRequest.create("SampleMethodName")
+                                     .addParameter(Parameter.create("param1"))
+                                     .addParameter(Parameter.create(1d))
+                                     .addParameter(Parameter.create(true))
+                                     .addParameter(Parameter.create(new java.util.Date()))
+                                     .addParameter(Parameter.create(1));
    
-serializer.write(request, System.out);
+Parser parser = new Parser(); //create new Parser
+parser.addBooleanConverter(true); //set style of boolean true means <code>1 or 0</code> false means <code>true or false</code>
+parser.addStringConverter(false); //set string style wrap with <string> tag or not
+parser.addDateConverter("yyyy-MM-dd'T'HH:mm:ss", //this provides advenced level of date read and write
+                        Locale.getDefault(),
+                        TimeZone.getTimeZone("GMT"));
+                        
+parser.write(OutputStreamWriter, requst, "utf-8"); 
+OutputStreamWriter#flush(); //flush outputStreamWriter   
 ```

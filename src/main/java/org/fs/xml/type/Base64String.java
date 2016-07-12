@@ -1,4 +1,4 @@
-package org.fs.xml.internal.type;
+package org.fs.xml.type;
 
 import android.text.TextUtils;
 import android.util.Base64;

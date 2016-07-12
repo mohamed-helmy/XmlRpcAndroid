@@ -1,4 +1,4 @@
-package org.fs.xml.internal.type;
+package org.fs.xml.type;
 
 import java.util.Collection;
 import java.util.Date;

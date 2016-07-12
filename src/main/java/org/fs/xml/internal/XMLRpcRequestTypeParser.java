@@ -1,7 +1,7 @@
 package org.fs.xml.internal;
 
-import org.fs.xml.internal.type.Parameter;
-import org.fs.xml.internal.type.XMLRpcRequest;
+import org.fs.xml.type.Parameter;
+import org.fs.xml.net.XMLRpcRequest;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlSerializer;

@@ -23,12 +23,20 @@ public class LegacyXMLConverterFactory extends Converter.Factory {
     public static LegacyXMLConverterFactory create() {
         return new LegacyXMLConverterFactory();
     }
+    public static LegacyXMLConverterFactory create(Parser parser) { return new LegacyXMLConverterFactory(parser); }
 
     private LegacyXMLConverterFactory() {
         parser = new Parser();
         parser.addBooleanConverter(true);//<boolean>1</boolean>
         parser.addStringConverter(false);//wrapped <string>text</string>
         parser.addDateConverter("yyyyMMdd'T'HH:mm:ss", Locale.getDefault(), TimeZone.getTimeZone("GMT"));
+    }
+
+    private LegacyXMLConverterFactory(Parser parser) {
+        this.parser = parser;
+        if (parser == null) {
+            throw new NullPointerException("parser is null");
+        }
     }
 
     @Override public Converter<?, RequestBody> requestBodyConverter(Type type, Annotation[] parameterAnnotations, Annotation[] methodAnnotations, Retrofit retrofit) {

@@ -1,6 +1,6 @@
 package org.fs.xml.internal;
 
-import org.fs.xml.internal.type.Base64String;
+import org.fs.xml.type.Base64String;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlSerializer;

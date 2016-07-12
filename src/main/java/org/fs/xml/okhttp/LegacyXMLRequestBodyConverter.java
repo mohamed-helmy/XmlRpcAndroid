@@ -1,7 +1,7 @@
 package org.fs.xml.okhttp;
 
 import org.fs.xml.internal.Parser;
-import org.fs.xml.internal.type.XMLRpcRequest;
+import org.fs.xml.net.XMLRpcRequest;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;

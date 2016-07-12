@@ -25,6 +25,9 @@ public class LegacyXMLConverterFactory extends Converter.Factory {
     }
     public static LegacyXMLConverterFactory create(Parser parser) { return new LegacyXMLConverterFactory(parser); }
 
+    /**
+     * Defaults initialized by api
+     */
     private LegacyXMLConverterFactory() {
         parser = new Parser();
         parser.addBooleanConverter(true);//<boolean>1</boolean>
@@ -32,6 +35,10 @@ public class LegacyXMLConverterFactory extends Converter.Factory {
         parser.addDateConverter("yyyyMMdd'T'HH:mm:ss", Locale.getDefault(), TimeZone.getTimeZone("GMT"));
     }
 
+    /**
+     * Pass custom Parser instance into Converter#Factory instance
+     * @param parser Parser parser instance
+     */
     private LegacyXMLConverterFactory(Parser parser) {
         this.parser = parser;
         if (parser == null) {

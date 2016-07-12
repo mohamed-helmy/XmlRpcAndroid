@@ -26,6 +26,7 @@ class XMLRpcRequestTypeParser implements TypeParser<XMLRpcRequest> {
 
     private XMLRpcRequestTypeParser() {}
 
+    @SuppressWarnings("unchecked")
     @Override public void write(XmlSerializer writer, XMLRpcRequest value) throws IOException {
         writer.startTag(null, Constants.REQUEST);
         //methodName
@@ -39,7 +40,7 @@ class XMLRpcRequestTypeParser implements TypeParser<XMLRpcRequest> {
             writer.startTag(null, PARAM);
             writer.startTag(null, VALUE);
             TypeParser converter = Parser.findWriteParser(param.asNil());
-            converter.write(writer, param.asNil());
+            converter.write(writer, param.asNil());//unchecked says yet it's the fitting one for write
             writer.endTag(null, VALUE);
             writer.endTag(null, PARAM);
         }

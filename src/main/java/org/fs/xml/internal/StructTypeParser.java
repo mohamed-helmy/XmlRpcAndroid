@@ -26,6 +26,7 @@ class StructTypeParser implements TypeParser<Map<String, ?>> {
 
     private StructTypeParser() {}
 
+    @SuppressWarnings("unchecked")
     @Override public void write(XmlSerializer writer, Map<String, ?> value) throws IOException {
         writer.startTag(null, Constants.STRUCT);
         for (Map.Entry<String, ?> entry : value.entrySet()) {

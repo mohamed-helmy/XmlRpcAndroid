@@ -23,6 +23,7 @@ class CollectionTypeParser implements TypeParser<Collection<?>> {
 
     private CollectionTypeParser() { }
 
+    @SuppressWarnings("unchecked")
     @Override public void write(XmlSerializer writer, Collection<?> collection) throws IOException {
         writer.startTag(null, Constants.ARRAY);
         writer.startTag(null, DATA);

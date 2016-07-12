@@ -26,6 +26,7 @@ class XMLRpcResponseTypeParser implements TypeParser<XMLRpcResponse> {
 
     private XMLRpcResponseTypeParser() {}
 
+    @SuppressWarnings("unchecked")
     @Override public void write(XmlSerializer writer, XMLRpcResponse value) throws IOException {
         writer.startTag(null, Constants.RESPONSE);
         if (value.isSuccess()) {

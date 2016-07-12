@@ -38,8 +38,15 @@ public final class Parser {
         converters.add(XMLRpcResponseTypeParser.create());//response
     }
 
+    /**
+     * <p>Constructor</p>
+     */
     public Parser() { }
 
+    /**
+     * <p>Adds String converter with style of a) plain b) wrapped</p>
+     * @param plain true if plain string read/write action
+     */
     public void addStringConverter(boolean plain) {
         if (plain) {
             converters.add(StringTypeParser.create(StringTypeParser.STYLE_NO_WRAP));
@@ -48,6 +55,10 @@ public final class Parser {
         }
     }
 
+    /**
+     * <p>Adds Boolean converter with style of a) binary b) string</p>
+     * @param binary true if binary boolean read/write action
+     */
     public void addBooleanConverter(boolean binary) {
         if (binary) {
             converters.add(BooleanTypeParser.create(BooleanTypeParser.STYLE_BINARY));
@@ -56,22 +67,47 @@ public final class Parser {
         }
     }
 
+    /**
+     * <p>Date converter default instance provided as "yyyyMMdd'T'HH:mm:ss", Locale#getDefault() and TimeZone#getTimeZone(String)</p>
+     */
     public void addDateConverter() {
         converters.add(DateTypeParser.create());
     }
 
+    /**
+     * <p>Date converter default instance provided as Locale#getDefault() and TimeZone#getTimeZone(String)</p>
+     * @param formatStr dateFormat String
+     */
     public void addDateConverter(String formatStr) {
         converters.add(DateTypeParser.create(formatStr));
     }
 
+    /**
+     * <p>Date converter default instance provided as TimeZone#getTimeZone(String)</p>
+     * @param formatStr dateFormat String
+     * @param locale  Locale instance
+     */
     public void addDateConverter(String formatStr, Locale locale) {
         converters.add(DateTypeParser.create(formatStr, locale));
     }
 
+    /**
+     * <p>Date converter default instance provided</p>
+     * @param formatStr dateFormat String
+     * @param locale Locale instance
+     * @param timeZone TimeZone instance
+     */
     public void addDateConverter(String formatStr, Locale locale, TimeZone timeZone) {
         converters.add(DateTypeParser.create(formatStr, locale, timeZone));
     }
 
+    /**
+     * <p>Writes XMLRpcRequest object instance into OutputStreamWriter instance with given encoding</p>
+     * @param writer OutputStreamWriter instance
+     * @param request XMLRpcRequest instance
+     * @param charSet String representation of charset
+     * @throws IOException if IO error occurs
+     */
     public void write(OutputStreamWriter writer, XMLRpcRequest request, String charSet) throws IOException {
         try {
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
@@ -80,7 +116,11 @@ public final class Parser {
             xmlWriter.startDocument(charSet, null);//no standalone should be written
             xmlWriter.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true);//pretty xml
             TypeParser converter = findWriteParser(request);
-            converter.write(xmlWriter, request);
+            //there is nothing else coming here
+            if (converter instanceof XMLRpcRequestTypeParser) {
+                XMLRpcRequestTypeParser requestParser = (XMLRpcRequestTypeParser) converter;
+                requestParser.write(xmlWriter, request);
+            }
             xmlWriter.endDocument();//don't forget to end document
             xmlWriter.flush();//don't forget to flush
         } catch (Exception e) {
@@ -88,6 +128,13 @@ public final class Parser {
         }
     }
 
+    /**
+     * <p>Reads InputStream into xml then parses it into XMLRpcResponse instance for given charset</p>
+     * @param in InputStream instance mainly coming from http/s requests
+     * @param charSet charset of stream
+     * @return XMLRpcResponse instance
+     * @throws IOException if IO error occurs
+     */
     public XMLRpcResponse read(InputStream in, String charSet) throws IOException {
         try {
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
@@ -103,6 +150,12 @@ public final class Parser {
         }
     }
 
+    /**
+     * <p>Helper method that serialization/deserialization concept of api, reader finder</p>
+     * @param reader XmlPullParser reader instance for reading
+     * @return TypeParser instance that is fit to be for next read
+     * @throws RuntimeException if no typeParser instance found for this reader position
+     */
     public static TypeParser findReadParser(XmlPullParser reader) {
         for (TypeParser converter : converters) {
             if (converter.hasRead(reader)) {
@@ -112,6 +165,12 @@ public final class Parser {
         throw new RuntimeException("no reader found for @{ " + reader.getName() + " }");
     }
 
+    /**
+     * <p>Helper method that serialization/deserialization concept of api, writer finder</p>
+     * @param object Object instance that will be required to be written
+     * @return TypeParser instance that is fit to be for next write
+     * @throws RuntimeException if this object can not be handled by our registered writers
+     */
     public static TypeParser findWriteParser(Object object) {
         for (TypeParser converter : converters) {
             if (converter.hasWrite(object)) {
